@@ -16,6 +16,18 @@
         .unanswered:hover {
             background-color:#8ADF82;
         }
+        .panel-footer { text-align: center; font-size:1.5em; }
+
+        .player { display:none; margin:15px; border-bottom: 5px solid; }
+        #player1 { border-bottom-color: #27D500; }; .answered1 { background-color: #27D500; } /* gruen */
+        #player2 { border-bottom-color: #D50000; }; .answered2 { background-color: #D50000; } /* rot */
+        #player3 { border-bottom-color: #00D5CB; }; .answered3 { background-color: #00D5CB; } /* tuerkis */
+        #player4 { border-bottom-color: #0060D5; }; .answered4 { background-color: #0060D5; } /* blau */
+        #player5 { border-bottom-color: #D200D5; }; .answered5 { background-color: #D200D5; } /* violett */
+        #player6 { border-bottom-color: #D5B200; }; .answered6 { background-color: #D5B200; } /* ocker */
+        #player7 { border-bottom-color: #D57900; }; .answered7 { background-color: #D57900; } /* orange */
+        #player8 { border-bottom-color: #009A93; }; .answered8 { background-color: #009A93; } /* dunkel-tuerkiss */
+        #player9 { border-bottom-color: #C777D5; }; .answered9 { background-color: #C777D5; } /* blass-violett */
     </style>
 </head>
 <body>
@@ -24,8 +36,19 @@
         <div class="panel-heading"></div>
             <div class="panel-body" id="main-board"></div>
             <div class="panel-footer">
-                Player: <span id="player"></span>
-                <div class="pull-right"><h4>Score: <span id="score">0</span></h4></div>
+                <div id="player1" class="player col-md-2 well panel-body"><span id="playername1"></span><br /><span id="score1">0</span></div>
+                <div id="player2" class="player col-md-2 well panel-body"><span id="playername2"></span><br /><span id="score2">0</span></div>
+                <div id="player3" class="player col-md-2 well panel-body"><span id="playername3"></span><br /><span id="score3">0</span></div>
+                <div id="player4" class="player col-md-2 well panel-body"><span id="playername4"></span><br /><span id="score4">0</span></div>
+                <div id="player5" class="player col-md-2 well panel-body"><span id="playername5"></span><br /><span id="score5">0</span></div>
+                <div id="player6" class="player col-md-2 well panel-body"><span id="playername6"></span><br /><span id="score6">0</span></div>
+                <div id="player7" class="player col-md-2 well panel-body"><span id="playername7"></span><br /><span id="score7">0</span></div>
+                <div id="player8" class="player col-md-2 well panel-body"><span id="playername8"></span><br /><span id="score8">0</span></div>
+                <div id="player9" class="player col-md-2 well panel-body"><span id="playername9"></span><br /><span id="score9">0</span></div>
+                <div class="pull-right">
+                    Player: <span id="player"></span>
+                    <h4>Score: <span id="score">0</span></h4>
+                </div>
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -118,6 +141,9 @@ function playerBuzzed(player) {
         var playername = prompt("Please enter your name", "Player " + player);
         if (playername != null) {
             players[player] = playername;
+            $('#playername' + player).text(playername);
+            $('#player' + player).css("display", "block");
+
             // document.getElementById("demo").innerHTML = "Hello " + person + "! How are you today?";
         }
     } else {
@@ -130,9 +156,14 @@ function playerBuzzed(player) {
 
 function setCurrentPlayer(player) {
     if (player == 0) {
+        if (currentplayer != 0) {
+            $('#player' + currentplayer).css("background-color", "white");
+        }
         playername = '';
     } else {
         playername = players[player];
+        bgcolor = $('#player' + player).css("border-bottom-color");
+        $('#player' + player).css("background-color", bgcolor);
     }
 
     currentplayer = player;
