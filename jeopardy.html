@@ -19,6 +19,7 @@
         .panel-footer { text-align: center; font-size:1.5em; }
 
         .player { display:none; margin:15px; border-bottom: 5px solid; }
+        .player.well { background-color: white; }
         #player1 { border-bottom-color: #27D500; } .answered1 { background-color: #27D500; } /* gruen */
         #player2 { border-bottom-color: #D50000; } .answered2 { background-color: #D50000; } /* rot */
         #player3 { border-bottom-color: #00D5CB; } .answered3 { background-color: #00D5CB; } /* tuerkis */
@@ -88,6 +89,8 @@ $(function(){
         var category = $(this).parent().data('category');
         var question = $(this).data('question');
         var value = map[category].questions[question].value;
+        currenttilevalue = value;
+        currenttile = $(this);
         var answers = $('#answers');
         $('.modal-title').empty().text(map[category].name);
         $('#question').empty().text(map[category].questions[question].question);
@@ -133,23 +136,28 @@ $(function(){
 
 var players = [];
 var currentplayer = 0;
-var score = 0;
+var score = [];
 var map;
+var currenttile;
+var currenttilevalue = 0;
 
 function playerBuzzed(player) {
-    if (! players[player]) {
-        var playername = prompt("Please enter your name", "Player " + player);
+    if (! players[player]) {  // Player not registered yet, ask for name
+        var playername = prompt("Player " + player + ", please enter your name", "Player " + player);
         if (playername != null) {
             players[player] = playername;
+            score[player] = 0;
             $('#playername' + player).text(playername);
             $('#player' + player).css("display", "block");
 
             // document.getElementById("demo").innerHTML = "Hello " + person + "! How are you today?";
         }
-    } else {
+    } else {  // known player buzzed
         // check if question is taken. if not, take it
         if (currentplayer == 0) {
-            setCurrentPlayer(player);
+            if ($('#question-modal').css("display") == "block") {  // only make player active if a question is displayed
+                setCurrentPlayer(player);
+            }
         }
     }
 }
@@ -171,11 +179,14 @@ function setCurrentPlayer(player) {
 }
 
 function rightAnswer() {
+    if (currentplayer == 0) { return False; }
     // TODO: add score for currentplayer, close question
+    $(tile).addClass('answered' + currentplayer);
     setCurrentPlayer(0);
 }
 
 function wrongAnswer() {
+    if (currentplayer == 0) { return False; }
     // TODO: decrease score for currentplayer
     setCurrentPlayer(0);
 }
@@ -211,6 +222,7 @@ function loadBoard(){//function that turns the board.json (loaded in the the map
 
 function updateScore(){
     $('#score').empty().text(score);
+    $('#score' + currentplayer).text(score[currentplayer]);
     setCurrentPlayer(0);
 }
 
@@ -219,7 +231,8 @@ function handleAnswer(){
         var tile= $('div[data-category="'+$(this).data('category')+'"]>[data-question="'+$(this).data('question')+'"]')[0];
         $(tile).empty().removeClass('unanswered').unbind().css('cursor','not-allowed');
         if ($(this).data('correct')){
-            score += parseInt($(this).data('value'));
+            score[currentplayer] += parseInt($(this).data('value'));
+            $(tile).addClass('answered' + currentplayer);
         }
         $('#question-modal').modal('hide');
         updateScore();
