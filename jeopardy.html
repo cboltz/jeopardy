@@ -24,6 +24,7 @@
         <div class="panel-heading"></div>
             <div class="panel-body" id="main-board"></div>
             <div class="panel-footer">
+                Player: <span id="player"></span>
                 <div class="pull-right"><h4>Score: <span id="score">0</span></h4></div>
                 <div class="clearfix"></div>
             </div>
@@ -84,9 +85,69 @@ $(function(){
         handleAnswer(); //bind answer onclick to newly created buttons
     });
 
+    $(document).keypress(function(event){
+        keycode = event.which;
+
+        if (keycode >= 49 && keycode <= 57) { // 1..9
+            player = event.which - 48;
+            playerBuzzed(player);
+        } else if (keycode == 27) { // escape
+            $('#question-modal').modal('hide');
+            setCurrentPlayer(0);
+        } else if (keycode == 43) { // +
+            rightAnswer();
+        } else if (keycode == 45) { // -
+            wrongAnswer();
+        } else if (keycode == 48) { // 0
+            setCurrentPlayer(0);
+        } else {
+            alert('Keycode ' + keycode);
+        }
+
+        return false;  // cancel any keypress events
+    });
 });
+
+var players = [];
+var currentplayer = 0;
 var score = 0;
 var map;
+
+function playerBuzzed(player) {
+    if (! players[player]) {
+        var playername = prompt("Please enter your name", "Player " + player);
+        if (playername != null) {
+            players[player] = playername;
+            // document.getElementById("demo").innerHTML = "Hello " + person + "! How are you today?";
+        }
+    } else {
+        // check if question is taken. if not, take it
+        if (currentplayer == 0) {
+            setCurrentPlayer(player);
+        }
+    }
+}
+
+function setCurrentPlayer(player) {
+    if (player == 0) {
+        playername = '';
+    } else {
+        playername = players[player];
+    }
+
+    currentplayer = player;
+    $('#player').text(playername);
+}
+
+function rightAnswer() {
+    // TODO: add score for currentplayer, close question
+    setCurrentPlayer(0);
+}
+
+function wrongAnswer() {
+    // TODO: decrease score for currentplayer
+    setCurrentPlayer(0);
+}
 function loadBoard(){//function that turns the board.json (loaded in the the map variable) into a jeopardy board
     var board = $('#main-board');
     var columns = map.length;
@@ -119,6 +180,7 @@ function loadBoard(){//function that turns the board.json (loaded in the the map
 
 function updateScore(){
     $('#score').empty().text(score);
+    setCurrentPlayer(0);
 }
 
 function handleAnswer(){
