@@ -179,17 +179,28 @@ function setCurrentPlayer(player) {
 }
 
 function rightAnswer() {
-    if (currentplayer == 0) { return False; }
-    // TODO: add score for currentplayer, close question
-    $(tile).addClass('answered' + currentplayer);
+    if (currentplayer == 0) { return; }
+
+    // mark tile as answered
+    currenttile.empty().removeClass('unanswered').unbind().css('cursor','not-allowed');
+    currenttile.addClass('answered' + currentplayer);
+
+    // close question
+    $('#question-modal').modal('hide');
+
+    // add score for currentplayer
+    score[currentplayer] += currenttilevalue;
+    updateScore();
     setCurrentPlayer(0);
 }
 
 function wrongAnswer() {
-    if (currentplayer == 0) { return False; }
-    // TODO: decrease score for currentplayer
+    if (currentplayer == 0) { return; }
+    score[currentplayer] -= currenttilevalue;
+    updateScore();
     setCurrentPlayer(0);
 }
+
 function loadBoard(){//function that turns the board.json (loaded in the the map variable) into a jeopardy board
     var board = $('#main-board');
     var columns = map.length;
