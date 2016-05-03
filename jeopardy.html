@@ -73,6 +73,8 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 <script>
+var showmaster = true;  // true: a showmaster enters the answers with + and - (answers not displayed) // false: display answers in multiple choice mode
+
 $(function(){
     $.ajax({//ajax method to load the board.json and call the loadBoard() function on success
         'async': false,
@@ -96,14 +98,21 @@ $(function(){
         $('#question').empty().html(map[category].questions[question].question);
         answers.empty();
         $.each(map[category].questions[question].answers, function(i, answer){//loop over the answers and make buttons for each
-            answers.append(
-                '<button class="btn btn-danger answer" ' +
+            if (showmaster) {
+                if (answer.correct) {
+                    answers.append(answer.text);
+                    $('.modal-footer').css('display', 'none');
+                }
+            } else {
+                answers.append(
+                    '<button class="btn btn-danger answer" ' +
                     'data-category="'+category+'"' +
                     'data-question="'+question+'"' +
                     'data-value="'+value+'"' +
                     'data-correct="'+answer.correct+'"' +
                     '>'+ answer.text+'</button><br><br>'
-            )
+                )
+            }
         });
         $('#question-modal').modal('show');//fire modal
         console.log(category, question);
@@ -124,6 +133,8 @@ $(function(){
             rightAnswer();
         } else if (keycode == 45) { // -
             wrongAnswer();
+        } else if (keycode == 97) { // a
+            showAnswer();
         } else if (keycode == 110) { // n
             noAnswer();
         } else if (keycode == 48) { // 0
@@ -240,6 +251,10 @@ function loadBoard(){//function that turns the board.json (loaded in the the map
     });
     $('.panel-heading').append('<div class="clearfix"></div>')
 
+}
+
+function showAnswer(){
+    $('.modal-footer').css('display', 'block');
 }
 
 function hideQuestion(){
