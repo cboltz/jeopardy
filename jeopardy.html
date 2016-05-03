@@ -92,7 +92,7 @@ $(function(){
         currenttilevalue = value;
         currenttile = $(this);
         var answers = $('#answers');
-        $('.modal-title').empty().text(map[category].name);
+        $('.modal-title').empty().html(map[category].name);
         $('#question').empty().html(map[category].questions[question].question);
         answers.empty();
         $.each(map[category].questions[question].answers, function(i, answer){//loop over the answers and make buttons for each
