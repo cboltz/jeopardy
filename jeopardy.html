@@ -74,6 +74,8 @@
     </div><!-- /.modal -->
 <script>
 var showmaster = true;  // true: a showmaster enters the answers with + and - (answers not displayed) // false: display answers in multiple choice mode
+boardfile = location.search.substr(1);
+if (!boardfile) boardfile = 'board.json';
 
 $(function(){
     $.ajax({//ajax method to load the board.json and call the loadBoard() function on success
@@ -81,7 +83,7 @@ $(function(){
         'global': false,
         type:'GET',
         dataType:'json',
-        url:'board.json',
+        url:boardfile,
         success:function(data){
             map = data;
             loadBoard();
