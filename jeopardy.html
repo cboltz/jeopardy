@@ -124,8 +124,10 @@ $(function(){
             rightAnswer();
         } else if (keycode == 45) { // -
             wrongAnswer();
+        } else if (keycode == 110) { // n
+            noAnswer();
         } else if (keycode == 48) { // 0
-            setCurrentPlayer(0);
+            setCurrentPlayer(0);  // if a player accidently buzzed
         } else {
             alert('Keycode ' + keycode);
         }
@@ -178,6 +180,15 @@ function setCurrentPlayer(player) {
     $('#player').text(playername);
 }
 
+function noAnswer() {
+    if (currenttilevalue == 0) { return; }
+
+    // mark tile as not answered
+    currenttile.empty().removeClass('unanswered').unbind().css('cursor','not-allowed');
+
+    hideQuestion();
+    setCurrentPlayer(0);
+}
 
 function rightAnswer() {
     if (currentplayer == 0) { return; }
