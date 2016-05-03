@@ -223,7 +223,6 @@ function loadBoard(){//function that turns the board.json (loaded in the the map
 function updateScore(){
     $('#score').empty().text(score);
     $('#score' + currentplayer).text(score[currentplayer]);
-    setCurrentPlayer(0);
 }
 
 function handleAnswer(){
@@ -236,6 +235,7 @@ function handleAnswer(){
         }
         $('#question-modal').modal('hide');
         updateScore();
+        setCurrentPlayer(0);
     })
 }
 </script>
