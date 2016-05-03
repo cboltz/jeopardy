@@ -117,8 +117,8 @@ $(function(){
         if (keycode >= 49 && keycode <= 57) { // 1..9
             player = event.which - 48;
             playerBuzzed(player);
-        } else if (keycode == 27) { // escape
-            $('#question-modal').modal('hide');
+        } else if (keycode == 27 || keycode == 120) { // escape or x - hide question
+            hideQuestion();
             setCurrentPlayer(0);
         } else if (keycode == 43) { // +
             rightAnswer();
@@ -178,6 +178,7 @@ function setCurrentPlayer(player) {
     $('#player').text(playername);
 }
 
+
 function rightAnswer() {
     if (currentplayer == 0) { return; }
 
@@ -185,12 +186,11 @@ function rightAnswer() {
     currenttile.empty().removeClass('unanswered').unbind().css('cursor','not-allowed');
     currenttile.addClass('answered' + currentplayer);
 
-    // close question
-    $('#question-modal').modal('hide');
-
     // add score for currentplayer
     score[currentplayer] += currenttilevalue;
     updateScore();
+
+    hideQuestion();
     setCurrentPlayer(0);
 }
 
@@ -231,6 +231,12 @@ function loadBoard(){//function that turns the board.json (loaded in the the map
 
 }
 
+function hideQuestion(){
+    $('#question-modal').modal('hide');
+    currenttile = null;
+    currenttilevalue = 0;
+}
+
 function updateScore(){
     $('#score').empty().text(score);
     $('#score' + currentplayer).text(score[currentplayer]);
@@ -244,7 +250,7 @@ function handleAnswer(){
             score[currentplayer] += parseInt($(this).data('value'));
             $(tile).addClass('answered' + currentplayer);
         }
-        $('#question-modal').modal('hide');
+        hideQuestion();
         updateScore();
         setCurrentPlayer(0);
     })
