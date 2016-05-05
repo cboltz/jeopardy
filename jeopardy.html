@@ -14,7 +14,7 @@
             padding-top: 35px;
             cursor: pointer;
         }
-        .unanswered:hover {
+        .unanswered:hover, .demo {
             background-color:#8ADF82;
         }
 
@@ -152,6 +152,9 @@ $(function(){
             noAnswer();
         } else if (keycode == 48) { // 0
             setCurrentPlayer(0);  // if a player accidently buzzed
+        } else if (keycode == 100) { // d
+            demomode = 1 - demomode; // switch demoRunner on/off
+            demoRunner();
         } else {
             alert('Keycode ' + keycode);
         }
@@ -166,6 +169,7 @@ var score = [];
 var map;
 var currenttile;
 var currenttilevalue = 0;
+var demomode = 0;
 
 function playerBuzzed(player) {
     if (! players[player]) {  // Player not registered yet, ask for name
@@ -241,6 +245,7 @@ function loadBoard(){//function that turns the board.json (loaded in the the map
     var board = $('#main-board');
     var columns = map.length;
     var column_width = parseInt(12/columns); //get the width/12 rounded down, to use the bootstrap column width appropriate for the number of categories
+    var tile_count = 0;
     console.log(columns);
     $.each(map, function(i,category){
         //load category name
@@ -260,7 +265,8 @@ function loadBoard(){//function that turns the board.json (loaded in the the map
         var column = $('#cat-'+i);
         $.each(category.questions, function(n,question){
             //add questions
-            column.append('<div class="well question unanswered" data-question="'+n+'">'+question.value+'</div>')
+            tile_count ++;
+            column.append('<div class="well question unanswered" id="tile' + tile_count + '" data-question="'+n+'">'+question.value+'</div>')
         });
     });
     $('.panel-heading').append('<div class="clearfix"></div>')
@@ -295,6 +301,25 @@ function handleAnswer(){
         setCurrentPlayer(0);
     })
 }
+
+// Order of fields in demo mode. Made for a 5x5 field, needs adjustment to look good at other field sizes.
+var demo_order = [1,6,11,16,21,22,23,24,25,20,15,10,5,4,3,2,7,12,17,18,19,14,9,8,13,13,18,19,14,9,8,7,12,17,18,19,20,15,10,5,4,3, // spiral
+    2,1,6,11,16,21,22,17,12,7,2,3,8,13,18,23,24,19,14,9,4,5,10,15,20,25, // horicontal zigzag
+    24,23,22,21,16,17,18,19,20,15,14,13,12,11,6,7,8,9,10,5,4,3,2 // vertical zigzag
+    ];
+var demo_last_tile = -1;
+function demoRunner(){
+    $('#tile' + demo_order[demo_last_tile]).removeClass('demo');
+
+    demo_last_tile ++;
+    if (demo_last_tile > demo_order.length) demo_last_tile = 0;
+
+    if (demomode) {
+        $('#tile' + demo_order[demo_last_tile]).addClass('demo');
+        setTimeout(function(){ demoRunner(); }, 100);
+    }
+}
+
 </script>
 </body>
 </html>
