@@ -5,6 +5,7 @@
     <script src="include/jquery-1.11.0.min.js"></script>
     <script src="include/bootstrap.min.js"></script>
     <style>
+        body { background:url(3840x2400.png) center center; }
         .question{
             height:100px;
             vertical-align: middle;
@@ -16,7 +17,17 @@
         .unanswered:hover {
             background-color:#8ADF82;
         }
-        .panel-footer { text-align: center; font-size:1.5em; }
+
+        .modal-dialog { width:900px; }
+        .modal-dialog img { text-align:center; }
+        .modal-footer { font-size:2em; }
+        #question { font-size:3em; }
+        .panel { background:rgba(255,255,255,0.4); }
+        .panel-default > .panel-heading { background:rgba(245,245,245,0.6); }
+        .panel-footer { text-align: center; font-size:1.5em; background:rgba(245,245,245,0.5); }
+
+        pre { background:none; border:none; font-size:.7em; }
+        pre.small { font-size:.4em; }
 
         .player { display:none; margin:15px; border-bottom: 5px solid; }
         .player.well { background-color: white; }
@@ -63,10 +74,10 @@
                     <h4 class="modal-title">Modal title</h4>
                 </div>
                 <div class="modal-body">
-                    <p id="question" style="font-size: 1.5em"></p>
+                    <p id="question"></p>
                 </div>
                 <div class="modal-footer ">
-                    <div id="answers" class="text-center">
+                    <div id="answers" class="text-left">
                     </div>
                 </div>
            </div><!-- /.modal-content -->
@@ -225,6 +236,7 @@ function wrongAnswer() {
     setCurrentPlayer(0);
 }
 
+
 function loadBoard(){//function that turns the board.json (loaded in the the map variable) into a jeopardy board
     var board = $('#main-board');
     var columns = map.length;
@@ -256,7 +268,7 @@ function loadBoard(){//function that turns the board.json (loaded in the the map
 }
 
 function showAnswer(){
-    $('.modal-footer').css('display', 'block');
+    $('.modal-footer').show(500);
 }
 
 function hideQuestion(){
