@@ -17,7 +17,7 @@
         .unanswered:hover, .demo {
             background-color:#8ADF82;
         }
-
+        .origdouble { text-decoration:line-through; color:rgba(0,0,0,0.3); }
         .modal-dialog { width:900px; }
         .modal-dialog img { text-align:center; }
         .modal-header h4 { text-shadow: 1px 1px 3px white; }
@@ -101,12 +101,21 @@ $(function(){
     $('.unanswered').click(function(){//event bound to clicking on a tile. it grabs the data from the click event, populates the modal, fires the modal, and binds the answer method
         var category = $(this).parent().data('category');
         var question = $(this).data('question');
+        var isdouble = $(this).data('double');
         var value = map[category].questions[question].value;
+        currenttileorigvalue = value;
+        if (isdouble) {
+            value = parseInt(prompt("          *** Double Jeopardy! ***\n\nHow many points do you want to risk?", value));
+        }
         currenttilevalue = value;
         currenttile = $(this);
         var answers = $('#answers');
         $('#currentquestion').empty().html(map[category].name)
-        $('#currentvalue').empty().html(value);
+        if (isdouble) {
+            $('#currentvalue').empty().html('<span class="origdouble">' + currenttileorigvalue + '</span> ' + value );
+        } else {
+            $('#currentvalue').empty().html(value);
+        }
         $('#question').empty().html(map[category].questions[question].question);
         answers.empty();
         $.each(map[category].questions[question].answers, function(i, answer){//loop over the answers and make buttons for each
@@ -168,6 +177,7 @@ var score = [];
 var map;
 var currenttile;
 var currenttilevalue = 0;
+var currenttileorigvalue = 0;
 var demomode = 0;
 
 function playerBuzzed(player) {
@@ -237,6 +247,8 @@ function rightAnswer() {
 function wrongAnswer() {
     if (currentplayer == 0) { return; }
     score[currentplayer] -= currenttilevalue;
+    currenttilevalue = currenttileorigvalue;
+    $('#currentvalue').html(currenttilevalue);
     updateScore();
     setCurrentPlayer(0);
 }
@@ -267,7 +279,9 @@ function loadBoard(){//function that turns the board.json (loaded in the the map
         $.each(category.questions, function(n,question){
             //add questions
             tile_count ++;
-            column.append('<div class="well question unanswered" id="tile' + tile_count + '" data-question="'+n+'">'+question.value+'</div>')
+            double = 0;
+            if (question.double) { double = 1; }
+            column.append('<div class="well question unanswered" id="tile' + tile_count + '" data-question="'+n+'" data-double="' + double + '">'+question.value+'</div>')
         });
     });
     $('.panel-heading').append('<div class="clearfix"></div>')

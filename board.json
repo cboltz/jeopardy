@@ -92,7 +92,8 @@
             },
             {
                 "value":500,
-               "question":"Question 5 in category 1 for 500 points",
+               "question":"Question 5 in category 1 for 500 points, daily double!",
+			   "double": 1,
                 "answers":[
                     {
                         "text":"A",
