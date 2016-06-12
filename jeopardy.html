@@ -20,6 +20,7 @@
 
         .modal-dialog { width:900px; }
         .modal-dialog img { text-align:center; }
+        .modal-header h4 { text-shadow: 1px 1px 3px white; }
         .modal-footer { font-size:2em; }
         #question { font-size:3em; }
         .panel { background:rgba(255,255,255,0.4); }
@@ -194,12 +195,14 @@ function setCurrentPlayer(player) {
     if (player == 0) {
         if (currentplayer != 0) {
             $('#player' + currentplayer).css("background-color", "white");
+            $('.modal-header').css("background-color", "white");
         }
         playername = '';
     } else {
         playername = players[player];
         bgcolor = $('#player' + player).css("border-bottom-color");
         $('#player' + player).css("background-color", bgcolor);
+        $('.modal-header').css("background-color", bgcolor);
     }
 
     currentplayer = player;
