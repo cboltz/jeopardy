@@ -57,9 +57,6 @@
                 <div id="player7" class="player col-md-2 well panel-body"><span id="playername7"></span><br /><span id="score7">0</span></div>
                 <div id="player8" class="player col-md-2 well panel-body"><span id="playername8"></span><br /><span id="score8">0</span></div>
                 <div id="player9" class="player col-md-2 well panel-body"><span id="playername9"></span><br /><span id="score9">0</span></div>
-                <div class="pull-right">
-                    <h4>Score: <span id="score">0</span></h4>
-                </div>
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -284,7 +281,6 @@ function hideQuestion(){
 }
 
 function updateScore(){
-    $('#score').empty().text(score);
     $('#score' + currentplayer).text(score[currentplayer]);
 }
 
