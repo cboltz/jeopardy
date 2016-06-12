@@ -68,7 +68,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title">
                     <span class="pull-right" id="player"></span>
-                    Modal title</h4>
+                    <span id="currentquestion"></span> <span id="currentvalue"></h4>
                 </div>
                 <div class="modal-body">
                     <p id="question"></p>
@@ -104,7 +104,8 @@ $(function(){
         currenttilevalue = value;
         currenttile = $(this);
         var answers = $('#answers');
-        $('.modal-title').empty().html(map[category].name + ' ' + value);
+        $('#currentquestion').empty().html(map[category].name)
+        $('#currentvalue').empty().html(value);
         $('#question').empty().html(map[category].questions[question].question);
         answers.empty();
         $.each(map[category].questions[question].answers, function(i, answer){//loop over the answers and make buttons for each
