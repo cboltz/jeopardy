@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+    <script src="include/jquery-1.11.0.min.js"></script>
+    <style>
+
+		/* sizes adjusted for A4 landscape with a 5x5 board */
+
+        @page { size: 21cm 29.7cm; margin: 10mm 8mm 10mm 10mm; }
+
+		body { font-size:small; background:white; }
+
+		h4, div, pre { margin:0; }
+
+		.panel-heading div, .category { width: 53mm; margin-right:1.5mm; float:left; }
+		#main-board { clear:left; }
+		#keys { clear:left; border-top:1px dotted black; }
+
+        .question { height:2cm; overflow: hidden; border-top:1px dotted black; margin-bottom:1px; }
+		.answer { height: 1.5cm; overflow:hidden; }
+        .double { font-weight: bold; border:2px solid black; margin-right:5px; margin-top:3px; float:left; }
+
+        img { max-height:2cm; width:auto; }
+
+        pre { font-size:.7em; overflow:hidden; white-space:pre-wrap; }
+        pre.small { font-size:.4em; }
+
+    </style>
+</head>
+<body>
+	<div class="panel-heading"></div>
+	<div class="panel-body" id="main-board"></div>
+
+	<div id="keys">
+        <b>1..9</b> player (buzz) &bull;
+        <b>0</b> reset player &bull;
+        <b>+/-</b> right/wrong answer &bull;
+        <b>a</b> show answer &bull;
+        <b>n</b> nobody answered &bull;
+        <b>x</b> hide clue &bull;
+        <b>m</b> music &bull;
+        <b>s</b> stop music &bull;
+        <b>d</b> demo mode &bull;
+        <b>F1..F12</b> lock input
+    </div>
+
+
+<script>
+boardfile = location.search.substr(1);
+if (!boardfile) boardfile = 'board.json';
+
+$(function(){
+    $.ajax({//ajax method to load the board.json and call the loadBoard() function on success
+        'async': false,
+        'global': false,
+        type:'GET',
+        dataType:'json',
+        url:boardfile,
+        success:function(data){
+            map = data;
+            loadBoard();
+        }
+    });
+
+});
+
+function loadBoard(){//function that turns the board.json (loaded in the the map variable) into a jeopardy board
+    var board = $('#main-board');
+    var columns = map.length;
+    var column_width = parseInt(12/columns); //get the width/12 rounded down, to use the bootstrap column width appropriate for the number of categories
+    var tile_count = 0;
+    console.log(columns);
+    $.each(map, function(i,category){
+        //load category name
+        $('.panel-heading').append(
+            '<div><h4>'+category.name+'</h4></div>'
+        );
+        //add column
+        board.append('<div class="category" id="cat-'+i+'"></div>');
+        var column = $('#cat-'+i);
+        $.each(category.questions, function(n,question){
+            isdouble = '';
+            if (question.double) isdouble = '<span class="double">&nbsp;D&nbsp;</span>';
+            //add questions and answers
+            column.append('<div class="question">'+question.question + '</div>');
+			column.append('<div class="answer">' + isdouble + question.answers[0].text+'</div>')
+        });
+    });
+}
+
+</script>
+</body>
+</html>
+<!--
+vim:expandtab
+-->
