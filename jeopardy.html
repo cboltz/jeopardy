@@ -81,6 +81,9 @@
            </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+<audio src="include/think-music.mp3" type="audio/mp3"></audio>
+
 <script>
 var showmaster = true;  // true: a showmaster enters the answers with + and - (answers not displayed) // false: display answers in multiple choice mode
 boardfile = location.search.substr(1);
@@ -158,6 +161,10 @@ $(function(){
             showAnswer();
         } else if (keycode == 110) { // n
             noAnswer();
+        } else if (keycode == 109) { // m
+            playMusic(); // requires include/think-music.mp3
+        } else if (keycode == 115) { // s
+            stopMusic();
         } else if (keycode == 48) { // 0
             setCurrentPlayer(0);  // if a player accidently buzzed
         } else if (keycode == 100) { // d
@@ -217,6 +224,8 @@ function setCurrentPlayer(player) {
 
     currentplayer = player;
     $('#player').text(playername);
+
+    stopMusic();
 }
 
 function noAnswer() {
@@ -314,6 +323,15 @@ function handleAnswer(){
         updateScore();
         setCurrentPlayer(0);
     })
+}
+
+function playMusic() {
+    $('audio')[0].play();
+}
+
+function stopMusic() {
+    $('audio')[0].pause(); // Stop playing
+    $('audio')[0].currentTime = 0; // Reset time
 }
 
 // Order of fields in demo mode. Made for a 5x5 field, needs adjustment to look good at other field sizes.
