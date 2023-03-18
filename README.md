@@ -23,6 +23,8 @@ It's possible to add one or more "daily doubles", see Category1 for 500 in board
 
 Note that this implementation expects the game host to provide sane input. It has some safety nets for obvious errors, but not for everything.
 
+Also note that nowadays browsers refuse to load JSON files if you open the page via `file://`. You'll need to set up a basic webserver so that you can access the Jeopardy board and the JSON files over http or https.
+
 
 
 License and Credits
