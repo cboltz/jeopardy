@@ -13,7 +13,7 @@ This is a HTML and jQuery based Jeopardy implementation. The mouse is only neede
 * `m` play think music (requires include/think-music.mp3, not included in this repo)
 * `s` stop music
 * `d` demo mode ("tile runner")
-* `F1`...`F12` lock input
+* `F1`...`F12` or `l` lock input
 
 `jeopardy.html` reads the board from JSON files (`board.json` by default, but you can use `jeopardy.html?myboard.json` to use a different file). If you include images, I'd recommend not to specify image dimensions and use CSS max-width/max-height instead.
 

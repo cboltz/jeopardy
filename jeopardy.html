@@ -170,7 +170,7 @@ $(function(){
         } else if (keycode == 100) { // d
             demomode = 1 - demomode; // switch demoRunner on/off
             demoRunner();
-        } else if (keycode == 0) { // function key etc.
+        } else if (keycode == 0 || keycode == 108) { // function key etc. or l
             alert('board and input locked');
         } else {
             console.log('unhandled key pressed, keycode ' + keycode);
